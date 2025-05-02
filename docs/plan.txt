@@ -1,0 +1,167 @@
+Development Plan
+1. Set Up the Development Environment
+A robust development environment ensures smooth coding, testing, and deployment.
+Install Python:
+Ensure Python 3.x (e.g., 3.9 or later) is installed on your development machine. Verify with python3 --version.
+
+Create a Virtual Environment:
+Isolate project dependencies using python3 -m venv venv. Activate it with source venv/bin/activate (Linux/Mac) or venv\Scripts\activate (Windows).
+
+Install Kivy:
+Since Kivy is a popular Python framework for Android apps, install it with pip install kivy. Assume Sunrise Signal uses Kivy; adjust if it uses another framework later.
+
+Install Additional Libraries:
+Install required libraries:
+sqlite3 (built-in with Python) for local storage.
+
+matplotlib (pip install matplotlib) for potential analytics visualizations, if Kivy’s native graphics are insufficient.
+
+Set Up Buildozer:
+Install Buildozer (pip install buildozer) to package the app into an APK. Install Android SDK and NDK as per Buildozer’s documentation, ensuring compatibility with your OS.
+
+3. Design the App’s Architecture
+A clear architecture ensures the app is modular and maintainable.
+Define App Screens:
+Plan the following screens:
+Home Screen: Entry point with options to log a bowel movement, view the calendar, or see analytics.
+
+Logging Screen: Form with the mini survey.
+
+Calendar View: Displays logged entries by date.
+
+Analytics Screen: Shows basic statistics and trends.
+
+Design the Data Model:
+Define fields for bowel movement records:
+date_time: Timestamp (e.g., “2023-10-15 14:30”).
+
+consistency: Integer (1-7, based on the Bristol Stool Scale).
+
+color: String (e.g., “brown”, “green”).
+
+blood_presence: Boolean (yes/no).
+
+pain_level: Integer (1-10).
+
+symptoms: String (e.g., “bloating, cramping”).
+
+Plan the Database:
+Use SQLite for local storage. Create a table bowel_movements with columns matching the data model, using appropriate data types (e.g., INTEGER, TEXT, DATETIME).
+
+4. Implement the Logging Feature
+The logging feature is the app’s core input mechanism.
+Create the Logging Screen:
+Use Kivy’s ScreenManager to add a LogScreen. Define it in a .kv file or Python code.
+
+Design the Mini Survey:
+Build a form with multiple-choice options using Kivy widgets:
+Consistency: Radio buttons or a dropdown for Bristol Stool Scale (1-7).
+
+Color: Dropdown with options (e.g., brown, green, yellow).
+
+Blood Presence: Checkbox or yes/no buttons.
+
+Pain Level: Slider or dropdown (1-10).
+
+Symptoms: Multiple checkboxes (e.g., bloating, cramping, none).
+
+Validate Input:
+Ensure required fields (e.g., date, consistency) are completed before saving. Display an error message if validation fails.
+
+Save the Record:
+On form submission, insert the data into the SQLite database using a function like insert_bowel_movement(data).
+
+5. Develop the Calendar View
+The calendar provides a visual history of logged entries.
+Adapt from Sunrise Signal:
+If Sunrise Signal has a calendar widget, reuse and modify it. Otherwise, build a simple calendar using Kivy’s GridLayout.
+
+Display Entries:
+Mark dates with logged entries using colors or icons:
+Green for normal consistency (e.g., 3-4 on Bristol scale).
+
+Red if blood is present or pain is high (>7).
+
+Enable Date Selection:
+Add an on-tap event to each date cell, displaying a popup or screen with details of that day’s logs (e.g., time, consistency, symptoms).
+
+6. Add Simple Analytics
+Analytics offer insights into gut health trends.
+Calculate Metrics:
+Write functions to compute:
+Frequency: Number of bowel movements per week.
+
+Average Consistency: Mean Bristol score over a period.
+
+Pain Trends: Average pain level over time.
+
+Visualize Data:
+Use Kivy’s canvas for simple bar charts or integrate matplotlib for line graphs showing consistency or frequency trends.
+
+Display Analytics:
+Create an AnalyticsScreen with labels for metrics and a graph section, updating dynamically based on database queries.
+
+7. Implement Data Storage
+Persistent storage ensures data is retained between app sessions.
+Set Up SQLite Database:
+Initialize the database on app startup with a CREATE TABLE statement for bowel_movements.
+
+Implement CRUD Operations:
+Write functions:
+insert_bowel_movement(data): Add a new record.
+
+get_logs_by_date(date): Retrieve logs for a specific day.
+
+get_all_logs(): Fetch all records for analytics.
+
+Optimize Queries:
+Use indexes on date_time for faster retrieval in the calendar and analytics views.
+
+8. Ensure Data Privacy and Security
+Protecting user health data is critical.
+Encrypt the Database (Optional):
+Use sqlcipher (pip install pysqlcipher3) to encrypt the SQLite database, requiring a key stored securely within the app.
+
+Limit Data Access:
+Ensure data stays local and isn’t shared externally. Avoid unnecessary permissions in the APK.
+
+Inform Users:
+Add a settings or info screen explaining that data is stored locally and securely, enhancing transparency.
+
+9. Test the App
+Thorough testing ensures reliability and usability.
+Write Unit Tests:
+Use pytest to test database functions (e.g., insert_bowel_movement) and analytics calculations.
+
+Perform UI Testing:
+Manually test each screen:
+Logging: Verify survey options save correctly.
+
+Calendar: Check date markers and selection.
+
+Analytics: Confirm metrics match logged data.
+
+Test on Android Devices:
+Use an emulator (e.g., Android Studio’s AVD) and a physical device to ensure compatibility across screen sizes and Android versions.
+
+10. Package and Deploy
+Prepare the app for Android deployment.
+Configure Buildozer:
+Edit buildozer.spec to set:
+App name: “Gut Health Tracker”
+
+Package name: com.yourname.guthealth
+
+Version: “1.0”
+
+Permissions: Minimal (e.g., storage if needed).
+
+Build the APK:
+Run buildozer android debug to generate the APK. Troubleshoot errors using Buildozer logs.
+
+Test the APK:
+Install the APK on a device with adb install <apk-file>. Verify all features work as expected.
+
+Consider Distribution:
+Optionally, create a Google Play Developer account ($25 one-time fee) and publish the app after further polish.
+
