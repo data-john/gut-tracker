@@ -1,4 +1,5 @@
 import sqlite3
+import logging
 
 # Initialize the database connection
 def init_db():
@@ -34,6 +35,19 @@ def insert_bowel_movement(data):
 
     connection.commit()
     connection.close()
+
+def get_bowel_movements():
+    connection = sqlite3.connect('gut_tracker.db')
+    cursor = connection.cursor()
+
+    # Retrieve all bowel movements
+    cursor.execute('SELECT * FROM bowel_movements')
+    rows = cursor.fetchall()
+
+    connection.close()
+
+    logging.warning(f"Fetched bowel movements: {rows}")
+    return rows
 
 # Call the function to initialize the database
 init_db()

@@ -10,6 +10,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from datetime import datetime, timedelta
 from calendar import monthrange
+from app.models import get_bowel_movements
 
 class LogScreen(Screen):
     def __init__(self, **kwargs):
@@ -170,9 +171,38 @@ class CalendarView(Screen):
         # Add day buttons
         for i in range(31):
             day = start_date + timedelta(days=i)
-            day_button = Button(text=day.strftime('%d %b'), size_hint_y=None, height=40)
+            # Fetch logs for the day (placeholder function, replace with actual database query)
+            logs = self.get_logs_by_date(day)
+
+            # Determine button color based on logs
+            if logs:
+                consistency_values = [log['consistency'] for log in logs if 'consistency' in log]
+                blood_presence = any(log['blood_presence'] != 'None' for log in logs)
+                pain_high = any(log['pain'] in ['Constant throbbing pain', 'Sharp pain while passing', 'Sharp pain while passing and afterwards'] for log in logs)
+
+                if blood_presence or pain_high:
+                    button_color = (1, 0, 0, 1)  # Red
+                elif any(3 <= int(consistency) <= 4 for consistency in consistency_values):
+                    button_color = (0, 1, 0, 1)  # Green
+                else:
+                    button_color = (1, 1, 1, 1)  # Default white
+            else:
+                button_color = (1, 1, 1, 1)  # Default white
+
+            day_button = Button(text=day.strftime('%d %b'), size_hint_y=None, height=40, background_color=button_color)
             day_button.bind(on_press=self.view_entry)
             self.calendar_grid.add_widget(day_button)
+
+    def get_logs_by_date(self, date):
+        # Placeholder function to simulate fetching logs for a specific date
+        # Replace this with an actual database query
+        logs = get_bowel_movements()
+        for log in logs:
+            log_date = datetime.strptime(log[1], '%Y-%m-%d %H:%M:%S')
+            if log_date.date() == date.date():
+                # return [{'consistency': log[2], 'blood_presence': log[3], 'pain': log[4]}]
+                return log
+        return []
 
     def view_entry(self, instance):
         # Placeholder for viewing log entries for a specific day
