@@ -37,11 +37,11 @@ date_time: Timestamp (e.g., “2023-10-15 14:30”).
 
 consistency: Integer (1-7, based on the Bristol Stool Scale).
 
-color: String (e.g., “brown”, “green”).
+color: String (e.g., “brown”, “green”, "yellow", "black").
 
-blood_presence: Boolean (yes/no).
+blood_presence: String ("None", "Little", "Lots").
 
-pain_level: Integer (1-10).
+pain: String ("None", "Itching", "Mild Pain while passing", "Mild Pain while passing and afterwards", "Constant throbbing pain", "Sharp pain while passing", "Sharp pain while passing and afterwards")
 
 symptoms: String (e.g., “bloating, cramping”).
 
