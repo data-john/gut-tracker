@@ -21,5 +21,18 @@ def init_db():
     connection.commit()
     connection.close()
 
+def insert_bowel_movement(data):
+    connection = sqlite3.connect('gut_tracker.db')
+    cursor = connection.cursor()
+
+    # Insert data into the bowel_movements table
+    cursor.execute('''
+        INSERT INTO bowel_movements (consistency, color, blood_presence, pain, symptoms)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (data['consistency'], data['color'], data['blood_presence'], data['pain'], ','.join(data['symptoms'])))
+
+    connection.commit()
+    connection.close()
+
 # Call the function to initialize the database
 init_db()

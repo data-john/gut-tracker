@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
+from app.models import insert_bowel_movement
 
 class LogScreen(Screen):
     def __init__(self, **kwargs):
@@ -89,8 +90,12 @@ class LogScreen(Screen):
             self.show_error_message("Please select a pain level.")
             return
 
-        # Proceed with saving the data (placeholder for database logic)
-        print("Form submitted with data:", data)
+        # Save the data to the database
+        try:
+            insert_bowel_movement(data)
+            print("Form submitted with data:", data)
+        except Exception as e:
+            self.show_error_message(f"An error occurred: {str(e)}")
 
     def show_error_message(self, message):
         # Display an error message to the user
