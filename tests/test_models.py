@@ -33,6 +33,7 @@ def test_insert_bowel_movement(setup_database):
         'color': 'brown',
         'blood_presence': 'no',
         'pain': 'none',
+        'straining': 'none',
         'symptoms': ['bloating', 'gas']
     }
 
@@ -51,6 +52,7 @@ def test_insert_bowel_movement(setup_database):
     assert records[0][3] == data['color'], "Color should match"
     assert records[0][4] == data['blood_presence'], "Blood presence should match"
     assert records[0][5] == data['pain'], "Pain should match"
-    assert records[0][6] == ','.join(data['symptoms']), "Symptoms should match"
+    assert records[0][6] == data['straining'], "Straining should match"
+    assert records[0][7] == ','.join(data['symptoms']), "Symptoms should match"
 
     connection.close()

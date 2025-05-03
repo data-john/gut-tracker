@@ -14,6 +14,7 @@ def init_db():
             color TEXT NOT NULL,
             blood_presence TEXT NOT NULL,
             pain TEXT NOT NULL,
+            straining TEXT NOT NULL,
             symptoms TEXT NOT NULL
         )
     ''')
@@ -27,9 +28,9 @@ def insert_bowel_movement(data):
 
     # Insert data into the bowel_movements table
     cursor.execute('''
-        INSERT INTO bowel_movements (consistency, color, blood_presence, pain, symptoms)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (data['consistency'], data['color'], data['blood_presence'], data['pain'], ','.join(data['symptoms'])))
+        INSERT INTO bowel_movements (consistency, color, blood_presence, pain, straining, symptoms)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (data['consistency'], data['color'], data['blood_presence'], data['pain'], data['straining'], ','.join(data['symptoms'])))
 
     connection.commit()
     connection.close()

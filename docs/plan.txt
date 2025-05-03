@@ -43,6 +43,8 @@ blood_presence: String ("None", "Little", "Lots").
 
 pain: String ("None", "Itching", "Mild Pain while passing", "Mild Pain while passing and afterwards", "Constant throbbing pain", "Sharp pain while passing", "Sharp pain while passing and afterwards")
 
+Straining: String ("None", "A little", "A lot").
+
 symptoms: String (e.g., “bloating, cramping”).
 
 Plan the Database:
@@ -62,6 +64,8 @@ Color: Dropdown with options (e.g., brown, green, yellow).
 Blood Presence: Dropdown with options.
 
 Pain: Dropdown with options.
+
+Straining: Dropdown with options.
 
 Symptoms: Multiple checkboxes (e.g., bloating, cramping, none).
 

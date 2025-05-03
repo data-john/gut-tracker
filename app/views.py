@@ -5,6 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
 from app.models import insert_bowel_movement
+import logging
 
 class LogScreen(Screen):
     def __init__(self, **kwargs):
@@ -48,6 +49,14 @@ class LogScreen(Screen):
         )
         layout.add_widget(self.pain_spinner)
 
+        # Straining
+        layout.add_widget(Label(text='Straining:'))
+        self.strain_spinner = Spinner(
+            text='Select',
+            values=('None', 'Little', 'Lots')
+        )
+        layout.add_widget(self.strain_spinner)
+
         # Symptoms
         layout.add_widget(Label(text='Symptoms (check all that apply):'))
         self.symptoms = {}
@@ -73,6 +82,7 @@ class LogScreen(Screen):
             'color': self.color_spinner.text,
             'blood_presence': self.blood_spinner.text,
             'pain': self.pain_spinner.text,
+            'straining': self.strain_spinner.text,
             'symptoms': [symptom for symptom, checkbox in self.symptoms.items() if checkbox.active]
         }
 
@@ -89,8 +99,12 @@ class LogScreen(Screen):
         if data['pain'] == 'Select':
             self.show_error_message("Please select a pain level.")
             return
+        if data['straining'] == 'Select':
+            self.show_error_message("Please select a straining value.")
+            return
 
         # Save the data to the database
+        # logging.warning(f"Submitting form with data: {data}")
         try:
             insert_bowel_movement(data)
             print("Form submitted with data:", data)
