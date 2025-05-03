@@ -50,7 +50,7 @@ class LogScreen(Screen):
         # Symptoms
         layout.add_widget(Label(text='Symptoms (check all that apply):'))
         self.symptoms = {}
-        for symptom in ['Bloating', 'Cramping', 'None']:
+        for symptom in ['Bloating', 'Cramping', 'Headache']:
             symptom_layout = BoxLayout(orientation='horizontal')
             symptom_checkbox = CheckBox()
             self.symptoms[symptom] = symptom_checkbox
@@ -74,4 +74,28 @@ class LogScreen(Screen):
             'pain': self.pain_spinner.text,
             'symptoms': [symptom for symptom, checkbox in self.symptoms.items() if checkbox.active]
         }
+
+        # Validate required fields
+        if data['consistency'] == 'Select':
+            self.show_error_message("Please select a consistency value.")
+            return
+        if data['color'] == 'Select':
+            self.show_error_message("Please select a color.")
+            return
+        if data['blood_presence'] == 'Select':
+            self.show_error_message("Please select a blood presence value.")
+            return
+        if data['pain'] == 'Select':
+            self.show_error_message("Please select a pain level.")
+            return
+
+        # Proceed with saving the data (placeholder for database logic)
         print("Form submitted with data:", data)
+
+    def show_error_message(self, message):
+        # Display an error message to the user
+        from kivy.uix.popup import Popup
+        popup = Popup(title='Error',
+                      content=Label(text=message),
+                      size_hint=(0.8, 0.4))
+        popup.open()
