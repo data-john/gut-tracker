@@ -73,8 +73,7 @@ On form submission, insert the data into the SQLite database using a function li
 
 5. Develop the Calendar View
 The calendar provides a visual history of logged entries.
-Adapt from Sunrise Signal:
-If Sunrise Signal has a calendar widget, reuse and modify it. Otherwise, build a simple calendar using Kivy’s GridLayout.
+Build a simple calendar using Kivy’s GridLayout.
 
 Display Entries:
 Mark dates with logged entries using colors or icons:
