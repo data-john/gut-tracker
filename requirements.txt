@@ -1,0 +1,7 @@
+kivy
+matplotlib
+pysqlcipher3
+buildozer
+setuptools
+Cython
+pyjnius

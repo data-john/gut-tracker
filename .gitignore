@@ -1,0 +1,4 @@
+# Ignore Buildozer build artifacts
+.buildozer/
+bin/
+*.apk

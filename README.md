@@ -20,3 +20,18 @@ gut_health_tracker/
 ├── README.md            # Project documentation
 ├── LICENSE              # License file
 └── requirements.txt     # Python dependencies (e.g., kivy, sqlite3)
+
+## Setup Hints
+
+For SQLCipher:
+sudo apt-get install libsqlcipher-dev 
+
+For Java 17 (compaitble with Gradle):
+sudo apt-get install openjdk-17-jdk
+sudo update-alternatives --config java
+
+For .NET Core SDK:
+sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
+sudo apt-get update
+sudo apt-get install libicu66
+sudo apt-get install -y dotnet-sdk-7.0
