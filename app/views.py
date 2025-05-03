@@ -6,6 +6,10 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
 from app.models import insert_bowel_movement
 import logging
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
+from datetime import datetime, timedelta
+from calendar import monthrange
 
 class LogScreen(Screen):
     def __init__(self, **kwargs):
@@ -118,3 +122,62 @@ class LogScreen(Screen):
                       content=Label(text=message),
                       size_hint=(0.8, 0.4))
         popup.open()
+
+class CalendarView(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+
+        # Title
+        layout.add_widget(Label(text='Log History Calendar', font_size=24, size_hint=(1, 0.1)))
+
+        # Calendar Grid
+        self.calendar_grid = GridLayout(cols=7, spacing=5, size_hint_y=None)
+        self.calendar_grid.bind(minimum_height=self.calendar_grid.setter('height'))
+
+        # Add day headers with proper height
+        for day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']:
+            self.calendar_grid.add_widget(Label(text=day, bold=True, size_hint_y=None, height=40))
+
+        # Populate calendar with days
+        self.populate_calendar()
+
+        # Scrollable view for the calendar
+        scroll_view = ScrollView(size_hint=(1, 0.8))
+        scroll_view.add_widget(self.calendar_grid)
+        layout.add_widget(scroll_view)
+
+        # Back Button
+        back_button = Button(text='Back', size_hint=(1, 0.1))
+        back_button.bind(on_press=self.go_back)
+        layout.add_widget(back_button)
+
+        self.add_widget(layout)
+
+    def populate_calendar(self):
+        # Get the current date
+        today = datetime(2025, 5, 3)  # Fixed date for consistency
+        start_date = today - timedelta(days=30)  # Show the last 30 days
+
+        # Calculate the starting day of the week for alignment
+        first_day_of_week = start_date.weekday()  # 0 = Monday, 6 = Sunday
+        offset = (first_day_of_week + 1) % 7  # Adjust to start with Sunday
+
+        # Add empty labels for alignment
+        for _ in range(offset):
+            self.calendar_grid.add_widget(Label(text="", size_hint_y=None, height=40))
+
+        # Add day buttons
+        for i in range(31):
+            day = start_date + timedelta(days=i)
+            day_button = Button(text=day.strftime('%d %b'), size_hint_y=None, height=40)
+            day_button.bind(on_press=self.view_entry)
+            self.calendar_grid.add_widget(day_button)
+
+    def view_entry(self, instance):
+        # Placeholder for viewing log entries for a specific day
+        print(f"Viewing entries for {instance.text}")
+
+    def go_back(self, _):
+        # Placeholder for navigating back to the previous screen
+        print("Going back to the previous screen")
