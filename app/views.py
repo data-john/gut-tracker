@@ -50,7 +50,7 @@ class LogScreen(Screen):
         # Symptoms
         layout.add_widget(Label(text='Symptoms (check all that apply):'))
         self.symptoms = {}
-        for symptom in ['Bloating', 'Cramping', 'Headache']:
+        for symptom in ['Bloating', 'Cramping', 'Headache', 'Pus present', 'Nausea', 'Dizziness']:
             symptom_layout = BoxLayout(orientation='horizontal')
             symptom_checkbox = CheckBox()
             self.symptoms[symptom] = symptom_checkbox
