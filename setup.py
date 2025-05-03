@@ -11,7 +11,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'gut-tracker=app.main:GutHealthApp',
+            'gut-tracker=app.main:main',
         ],
     },
     author='John',
