@@ -1,0 +1,2 @@
+[console_scripts]
+gut-tracker = app.main:GutHealthApp
