@@ -59,9 +59,9 @@ Consistency: Radio buttons or a dropdown for Bristol Stool Scale (1-7).
 
 Color: Dropdown with options (e.g., brown, green, yellow).
 
-Blood Presence: Checkbox or yes/no buttons.
+Blood Presence: Dropdown with options.
 
-Pain Level: Slider or dropdown (1-10).
+Pain: Dropdown with options.
 
 Symptoms: Multiple checkboxes (e.g., bloating, cramping, none).
 
