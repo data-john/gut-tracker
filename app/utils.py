@@ -22,7 +22,7 @@ def calculate_average_consistency(logs):
     :param logs: List of log dictionaries with 'consistency' field.
     :return: Float representing the average consistency.
     """
-    consistencies = [int(log['consistency']) for log in logs if log['consistency'].isdigit()]
+    consistencies = [int(log['consistency']) for log in logs]
     if not consistencies:
         return 0
     return sum(consistencies) / len(consistencies)

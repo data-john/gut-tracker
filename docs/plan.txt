@@ -98,11 +98,11 @@ Average Consistency: Mean Bristol score over a period.
 
 Pain Trends: Average pain level over time.
 
-Visualize Data:
-Use Kivy’s canvas for simple bar charts or integrate matplotlib for line graphs showing consistency or frequency trends.
-
 Display Analytics:
 Create an AnalyticsScreen with labels for metrics and a graph section, updating dynamically based on database queries.
+
+Visualize Data:
+Use Kivy’s canvas for simple bar charts or integrate matplotlib for line graphs showing consistency or frequency trends.
 
 7. Implement Data Storage
 Persistent storage ensures data is retained between app sessions.

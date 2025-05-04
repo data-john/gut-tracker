@@ -4,13 +4,14 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.spinner import Spinner
 from kivy.uix.checkbox import CheckBox
-from app.models import insert_bowel_movement
 import logging
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from datetime import datetime, timedelta
 from calendar import monthrange
-from app.models import get_bowel_movements
+from app.models import get_bowel_movements, insert_bowel_movement
+from app.utils import calculate_frequency, calculate_average_consistency, calculate_pain_trends
+
 
 class LogScreen(Screen):
     def __init__(self, **kwargs):
@@ -284,7 +285,8 @@ class HomeScreen(Screen):
         layout.add_widget(add_log_button)
 
         # Button to go to Analytics (not implemented yet)
-        analytics_button = Button(text='View Analytics (Coming Soon)', size_hint=(1, 0.2))
+        analytics_button = Button(text='View Analytics', size_hint=(1, 0.2))
+        analytics_button.bind(on_press=self.go_to_analytics)
         layout.add_widget(analytics_button)
 
         self.add_widget(layout)
@@ -294,3 +296,49 @@ class HomeScreen(Screen):
 
     def go_to_add_log(self, _):
         self.manager.current = 'log'
+    
+    def go_to_analytics(self, _):
+        self.manager.current = 'analytics'
+
+
+class AnalyticsScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+
+        # Title
+        layout.add_widget(Label(text='Analytics', font_size=24, size_hint=(1, 0.1)))
+
+        # Scrollable view for analytics
+        scroll_view = ScrollView(size_hint=(1, 0.8))
+        self.analytics_content = BoxLayout(orientation='vertical', padding=10, spacing=10, size_hint_y=None)
+        self.analytics_content.bind(minimum_height=self.analytics_content.setter('height'))
+        scroll_view.add_widget(self.analytics_content)
+        layout.add_widget(scroll_view)
+
+        # Back Button
+        back_button = Button(text='Back', size_hint=(1, 0.1))
+        back_button.bind(on_press=self.go_home)
+        layout.add_widget(back_button)
+
+        self.add_widget(layout)
+
+    def on_enter(self):
+        # Clear previous analytics content
+        self.analytics_content.clear_widgets()
+
+        # Fetch logs from the database
+        logs = get_bowel_movements()
+
+        # Calculate metrics
+        frequency = calculate_frequency(logs)
+        average_consistency = calculate_average_consistency(logs)
+        pain_trends = calculate_pain_trends(logs)
+
+        # Display metrics
+        self.analytics_content.add_widget(Label(text=f'Frequency (Bowel Movements per Week): {frequency}', size_hint_y=None, height=40))
+        self.analytics_content.add_widget(Label(text=f'Average Consistency: {average_consistency:.2f}', size_hint_y=None, height=40))
+        self.analytics_content.add_widget(Label(text=f'Pain Trends: {pain_trends}', size_hint_y=None, height=40))
+
+    def go_home(self, _):
+        self.manager.current = 'home'
