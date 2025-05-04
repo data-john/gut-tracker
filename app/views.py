@@ -342,8 +342,9 @@ class AnalyticsScreen(Screen):
         self.analytics_content.add_widget(Label(text=f'Average Consistency: {average_consistency:.2f}', size_hint_y=None, height=40))
         self.analytics_content.add_widget(Label(text=f'Pain Trends: {pain_trends}', size_hint_y=None, height=40))
 
-        # Add a graph for consistency trends
+        # Add graphs for analytics
         self.add_consistency_graph(logs)
+        self.add_pain_trends_graph(logs)
 
     def add_consistency_graph(self, logs):
         try:
@@ -373,6 +374,29 @@ class AnalyticsScreen(Screen):
             logging.warning("[DEBUG] Graph widget added to the layout successfully.")
         except Exception as e:
             logging.error(f"[ERROR] Failed to add consistency graph: {e}")
+
+    def add_pain_trends_graph(self, logs):
+        try:
+            # Prepare data for the graph
+            pain_trends = calculate_pain_trends(logs)
+            pain_levels = list(pain_trends.keys())
+            frequencies = list(pain_trends.values())
+
+            # Create a matplotlib figure
+            fig, ax = plt.subplots()
+            ax.bar(pain_levels, frequencies, color='orange')
+            ax.set_title('Pain Trends')
+            ax.set_xlabel('Pain Levels')
+            ax.set_ylabel('Frequency')
+            ax.grid(axis='y')
+
+            # Add the graph to the Kivy layout with explicit size hints
+            graph_widget = FigureCanvasKivyAgg(fig)
+            graph_widget.size_hint = (1, None)
+            graph_widget.height = 400  # Set a fixed height for better visibility
+            self.analytics_content.add_widget(graph_widget)
+        except Exception as e:
+            logging.error(f"[ERROR] Failed to add pain trends graph: {e}")
 
     def go_home(self, _):
         self.manager.current = 'home'
