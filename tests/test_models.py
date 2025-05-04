@@ -1,5 +1,5 @@
 import pytest
-from app.models import init_db, insert_bowel_movement
+from app.models import init_db, insert_bowel_movement, get_bowel_movements
 import sqlite3
 
 # Fixture to set up and tear down the database for testing
@@ -33,6 +33,7 @@ def test_insert_bowel_movement(setup_database):
         'color': 'brown',
         'blood_presence': 'no',
         'pain': 'none',
+        'straining': 'none',
         'symptoms': ['bloating', 'gas']
     }
 
@@ -51,6 +52,27 @@ def test_insert_bowel_movement(setup_database):
     assert records[0][3] == data['color'], "Color should match"
     assert records[0][4] == data['blood_presence'], "Blood presence should match"
     assert records[0][5] == data['pain'], "Pain should match"
-    assert records[0][6] == ','.join(data['symptoms']), "Symptoms should match"
+    assert records[0][6] == data['straining'], "Straining should match"
+    assert records[0][7] == ','.join(data['symptoms']), "Symptoms should match"
 
     connection.close()
+
+def test_get_bowel_movements(setup_database):
+    # Insert test data
+    test_data = {
+        'consistency': 4,
+        'color': 'Brown',
+        'blood_presence': 'None',
+        'pain': 'None',
+        'straining': 'None',
+        'symptoms': ['Bloating', 'Cramping']
+    }
+    insert_bowel_movement(test_data)
+
+    # Fetch data using the function
+    results = get_bowel_movements()
+
+    # Assert that the inserted data is present in the results
+    assert len(results) > 0
+    assert any(row['consistency'] == test_data['consistency'] and row['color'] == test_data['color'] for row in results)
+
