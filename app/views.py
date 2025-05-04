@@ -158,7 +158,8 @@ class CalendarView(Screen):
 
     def populate_calendar(self):
         # Get the current date
-        today = datetime(2025, 5, 3)  # Fixed date for consistency
+        # today = datetime(2025, 5, 3)  # Fixed date for consistency
+        today = datetime.today()  # Fixed date for consistency
         start_date = today - timedelta(days=30)  # Show the last 30 days
 
         # Calculate the starting day of the week for alignment
@@ -174,6 +175,7 @@ class CalendarView(Screen):
             day = start_date + timedelta(days=i)
             # Fetch logs for the day (placeholder function, replace with actual database query)
             logs = self.get_logs_by_date(day)
+            logging.warning(f"Logs for {day}: {logs}")
 
             # Determine button color based on logs
             if logs:
@@ -200,7 +202,7 @@ class CalendarView(Screen):
         logs = get_bowel_movements()
         date_logs = []
         for log in logs:
-            log_date = datetime.strptime(log[1], '%Y-%m-%d %H:%M:%S')
+            log_date = datetime.strptime(log["date_time"], '%Y-%m-%d %H:%M:%S')
             if log_date.date() == date.date():
                 # return [{'consistency': log[2], 'blood_presence': log[3], 'pain': log[4]}]
                 date_logs.append(log)
@@ -211,10 +213,19 @@ class CalendarView(Screen):
         print(f"Viewing entries for {instance.text}")
 
     def go_home(self, _):
-        # Placeholder for navigating back to the previous screen
         print("Going to the home screen")
         self.manager.current = 'home'
     
+    def on_enter(self):
+        # Clear the existing calendar grid to avoid duplication
+        self.calendar_grid.clear_widgets()
+
+        # Add day headers again
+        for day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']:
+            self.calendar_grid.add_widget(Label(text=day, bold=True, size_hint_y=None, height=40))
+
+        # Repopulate the calendar with updated data
+        self.populate_calendar()
         
 class HomeScreen(Screen):
     def __init__(self, **kwargs):

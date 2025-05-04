@@ -74,5 +74,5 @@ def test_get_bowel_movements(setup_database):
 
     # Assert that the inserted data is present in the results
     assert len(results) > 0
-    assert any(row[2] == test_data['consistency'] and row[3] == test_data['color'] for row in results)
+    assert any(row['consistency'] == test_data['consistency'] and row['color'] == test_data['color'] for row in results)
 

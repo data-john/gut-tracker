@@ -79,5 +79,5 @@ def test_get_logs_by_date(setup_database):
 
     # Assert that the logs for the specific date are returned
     assert len(results) > 0, "There should be logs for the specific date"
-    assert any(row[2] == test_data_1['consistency'] and row[3] == test_data_1['color'] for row in results), "Test data 1 should be in the results"
-    assert any(row[2] == test_data_2['consistency'] and row[3] == test_data_2['color'] for row in results), "Test data 2 should be in the results"
+    assert any(row['consistency'] == test_data_1['consistency'] and row['color'] == test_data_1['color'] for row in results), "Test data 1 should be in the results"
+    assert any(row['consistency'] == test_data_2['consistency'] and row['color'] == test_data_2['color'] for row in results), "Test data 2 should be in the results"

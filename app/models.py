@@ -44,10 +44,16 @@ def get_bowel_movements():
     cursor.execute('SELECT * FROM bowel_movements')
     rows = cursor.fetchall()
 
+    # Get column names to map to dictionary keys
+    column_names = [description[0] for description in cursor.description]
+
+    # Convert rows to a list of dictionaries
+    movements = [dict(zip(column_names, row)) for row in rows]
+
     connection.close()
 
-    logging.warning(f"Fetched bowel movements: {rows}")
-    return rows
+    logging.warning(f"Fetched bowel movements: {movements}")
+    return movements
 
 # Call the function to initialize the database
 init_db()
