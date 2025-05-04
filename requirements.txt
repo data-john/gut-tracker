@@ -6,3 +6,6 @@ setuptools
 Cython
 pyjnius
 pytest
+kivy_garden
+kivy_garden.matplotlib
+kivy_garden.graph
