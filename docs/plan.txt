@@ -83,7 +83,7 @@ Display Entries:
 Mark dates with logged entries using colors or icons:
 Green for normal consistency (e.g., 3-4 on Bristol scale).
 
-Red if blood is present or pain is high (>7).
+Red if blood is present or pain is high.
 
 Enable Date Selection:
 Add an on-tap event to each date cell, displaying a popup or screen with details of that day’s logs (e.g., time, consistency, symptoms).

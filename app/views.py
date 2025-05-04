@@ -115,6 +115,7 @@ class LogScreen(Screen):
             print("Form submitted with data:", data)
         except Exception as e:
             self.show_error_message(f"An error occurred: {str(e)}")
+        self.manager.current = 'calendar'  # Navigate to the calendar view
 
     def show_error_message(self, message):
         # Display an error message to the user
@@ -149,9 +150,9 @@ class CalendarView(Screen):
         layout.add_widget(scroll_view)
 
         # Back Button
-        back_button = Button(text='Back', size_hint=(1, 0.1))
-        back_button.bind(on_press=self.go_back)
-        layout.add_widget(back_button)
+        home_button = Button(text='Home', size_hint=(1, 0.1))
+        home_button.bind(on_press=self.go_home)
+        layout.add_widget(home_button)
 
         self.add_widget(layout)
 
@@ -193,21 +194,51 @@ class CalendarView(Screen):
             day_button.bind(on_press=self.view_entry)
             self.calendar_grid.add_widget(day_button)
 
-    def get_logs_by_date(self, date):
+    def get_logs_by_date(self, date:datetime):
         # Placeholder function to simulate fetching logs for a specific date
         # Replace this with an actual database query
         logs = get_bowel_movements()
+        date_logs = []
         for log in logs:
             log_date = datetime.strptime(log[1], '%Y-%m-%d %H:%M:%S')
             if log_date.date() == date.date():
                 # return [{'consistency': log[2], 'blood_presence': log[3], 'pain': log[4]}]
-                return log
-        return []
+                date_logs.append(log)
+        return date_logs
 
     def view_entry(self, instance):
         # Placeholder for viewing log entries for a specific day
         print(f"Viewing entries for {instance.text}")
 
-    def go_back(self, _):
+    def go_home(self, _):
         # Placeholder for navigating back to the previous screen
-        print("Going back to the previous screen")
+        print("Going to the home screen")
+        self.manager.current = 'home'
+    
+        
+class HomeScreen(Screen):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+
+        # Button to go to Calendar View
+        calendar_button = Button(text='View Calendar', size_hint=(1, 0.2))
+        calendar_button.bind(on_press=self.go_to_calendar)
+        layout.add_widget(calendar_button)
+
+        # Button to go to Add Log
+        add_log_button = Button(text='Add Log', size_hint=(1, 0.2))
+        add_log_button.bind(on_press=self.go_to_add_log)
+        layout.add_widget(add_log_button)
+
+        # Button to go to Analytics (not implemented yet)
+        analytics_button = Button(text='View Analytics (Coming Soon)', size_hint=(1, 0.2))
+        layout.add_widget(analytics_button)
+
+        self.add_widget(layout)
+
+    def go_to_calendar(self, _):
+        self.manager.current = 'calendar'
+
+    def go_to_add_log(self, _):
+        self.manager.current = 'log'
