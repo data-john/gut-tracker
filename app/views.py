@@ -209,8 +209,49 @@ class CalendarView(Screen):
         return date_logs
 
     def view_entry(self, instance):
-        # Placeholder for viewing log entries for a specific day
-        print(f"Viewing entries for {instance.text}")
+        # Display a popup with log details for the selected day
+        from kivy.uix.popup import Popup
+        from kivy.uix.label import Label
+        from kivy.uix.boxlayout import BoxLayout
+        from kivy.uix.scrollview import ScrollView
+
+        # Parse the date from the button text
+        selected_date = datetime.strptime(instance.text, '%d %b')
+        selected_date = selected_date.replace(year=datetime.today().year)  # Add the current year
+
+        # Fetch logs for the selected date
+        logs = self.get_logs_by_date(selected_date)
+
+        # Create a layout for the popup content
+        content_layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+
+        if logs:
+            for log in logs:
+                log_row = BoxLayout(orientation='horizontal', spacing=10, size_hint_y=None, height=100)
+
+                # Extract time from the log's date_time
+                log_time = datetime.strptime(log['date_time'], '%Y-%m-%d %H:%M:%S').strftime('%H:%M')
+
+                # Add time on the left
+                log_row.add_widget(Label(text=log_time, size_hint_x=0.2, halign='left', valign='middle'))
+
+                # Add details on the right
+                log_details = f"Consistency: {log['consistency']}\nBlood Presence: {log['blood_presence']}\nPain: {log['pain']}\nStraining: {log['straining']}\nSymptoms: {log['symptoms']}"
+                log_row.add_widget(Label(text=log_details, size_hint_x=0.8, halign='left', valign='middle'))
+
+                content_layout.add_widget(log_row)
+        else:
+            content_layout.add_widget(Label(text="No logs for this day.", size_hint_y=None, height=40))
+
+        # Add a scroll view to handle multiple logs
+        scroll_view = ScrollView()
+        scroll_view.add_widget(content_layout)
+
+        # Create and open the popup
+        popup = Popup(title=f"Logs for {instance.text}",
+                      content=scroll_view,
+                      size_hint=(0.8, 0.8))
+        popup.open()
 
     def go_home(self, _):
         print("Going to the home screen")

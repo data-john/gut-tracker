@@ -1,3 +1,5 @@
 1. Make consistency a slider with information
 
 2. Submit button not working unless pressed in a specific place
+
+3. Distinguish between no logs and mediocre logs on CV
