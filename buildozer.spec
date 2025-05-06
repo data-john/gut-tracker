@@ -15,10 +15,14 @@ package.name = com.john.guthealth
 
 # (str) Version of your application
 # Example: version = 1.0
-version = 0.1
+version = 0.2.1
 
 android.ndk_path = /home/john/.buildozer/android/platform/android-ndk-r25b
 android.api = 31
 android.minapi = 21
 
 log_level = 2
+
+permissions = android.permission.WRITE_EXTERNAL_STORAGE
+
+requirements = kivy,matplotlib,pysqlcipher3,buildozer,setuptools,Cython,pyjnius,pytest,kivy_garden,kivy_garden.matplotlib,kivy_garden.graph
